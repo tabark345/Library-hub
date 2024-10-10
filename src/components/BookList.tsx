@@ -203,15 +203,19 @@ const books = [
         category: "Non-fiction"
     },
 ];
+interface BookListProps {
+    searchTerm: string;
+    selectedCategory: string;
+    limit?: number;
+}
 
-const BookList = ({ searchTerm, selectedCategory, limit = books.length }) => {
+const BookList: React.FC<BookListProps> = ({ searchTerm, selectedCategory, limit = books.length }) => {
     const filteredBooks = books.filter(book => 
         (selectedCategory === "All" || book.category === selectedCategory) &&
         (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
         book.description.toLowerCase().includes(searchTerm.toLowerCase()))
-        )
-        .slice(0, limit)
+    ).slice(0, limit);
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -236,7 +240,7 @@ const BookList = ({ searchTerm, selectedCategory, limit = books.length }) => {
             </div>
         ))}
         </div>
-    )
+    );
 }
 
-export default BookList
+export default BookList;
