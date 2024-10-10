@@ -209,38 +209,40 @@ interface BookListProps {
     limit?: number;
 }
 
-const BookList: React.FC<BookListProps> = ({ searchTerm, selectedCategory, limit = books.length }) => {
-    const filteredBooks = books.filter(book => 
-        (selectedCategory === "All" || book.category === selectedCategory) &&
-        (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.description.toLowerCase().includes(searchTerm.toLowerCase()))
-    ).slice(0, limit);
 
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredBooks.map((book) => (
-            <div key={book.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src={book.image} alt={book.title} className="w-full h-48 object-cover" />
-            <div className="p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">{book.title}</h2>
-                <div className="flex items-center mb-2">
-                <User className="w-4 h-4 mr-1 text-gray-600" />
-                <span className="text-gray-600">{book.author}</span>
+    const BookList = ({ searchTerm = "", selectedCategory = "All", limit = books.length }: BookListProps) => {
+        const filteredBooks = books
+            .filter((book) =>
+                (selectedCategory === "All" || book.category === selectedCategory) &&
+                (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                book.description.toLowerCase().includes(searchTerm.toLowerCase()))
+            )
+            .slice(0, limit);
+        
+            return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredBooks.map((book) => (
+                <div key={book.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src={book.image} alt={book.title} className="w-full h-48 object-cover" />
+                    <div className="p-6">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">{book.title}</h2>
+                    <div className="flex items-center mb-2">
+                        <User className="w-4 h-4 mr-1 text-gray-600" />
+                        <span className="text-gray-600">{book.author}</span>
+                    </div>
+                    <p className="text-gray-600 mb-2">{book.description}</p>
+                    <div className="flex items-center justify-between">
+                        <span className="text-sm text-indigo-600 font-semibold">{book.category}</span>
+                        <div className="flex items-center">
+                        <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                        <span className="text-gray-700">{book.rating.toFixed(1)}</span>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-                <p className="text-gray-600 mb-2">{book.description}</p>
-                <div className="flex items-center justify-between">
-                <span className="text-sm text-indigo-600 font-semibold">{book.category}</span>
-                <div className="flex items-center">
-                    <Star className="w-5 h-5 text-yellow-400 mr-1" />
-                    <span className="text-gray-700">{book.rating.toFixed(1)}</span>
-                </div>
-                </div>
+                ))}
             </div>
-            </div>
-        ))}
-        </div>
-    );
-}
-
+            );
+};
 export default BookList;
