@@ -214,138 +214,41 @@ const books = [
         image: SapiensABriefHistoryofHumankind,
         category: "Non-fiction"
     },
-    {
-        id: 21,
-        title: "The Alchemist",
-        author: "Paulo Coelho",
-        description: "A philosophical tale about a shepherd’s journey to pursue his dreams.",
-        rating: 4.5,
-        image: TheAlchemist,
-        category: "Fiction"
-    },
-    {
-        id: 22,
-        title: "Anna Karenina",
-        author: "Leo Tolstoy",
-        description: "A tragic tale of love and betrayal in Russian high society.",
-        rating: 4.6,
-        image: AnnaKarenina,
-        category: "Fiction"
-    },
-    {
-        id: 23,
-        title: "Les Misérables",
-        author: "Victor Hugo",
-        description: "An epic story of redemption set against the backdrop of the French Revolution.",
-        rating: 4.7,
-        image: LesMiserables,
-        category: "Historical Fiction"
-    },
-    {
-        id: 24,
-        title: "The Iliad",
-        author: "Homer",
-        description: "An ancient Greek epic that tells the story of the Trojan War.",
-        rating: 4.7,
-        image: TheIliad,
-        category: "Classics"
-    },
-    {
-        id: 25,
-        title: "Jane Eyre",
-        author: "Charlotte Brontë",
-        description: "A coming-of-age story of an orphaned girl navigating love and morality.",
-        rating: 4.5,
-        image: JaneEyre,
-        category: "Fiction"
-    },
-    {
-        id: 26,
-        title: "Brave New World",
-        author: "Aldous Huxley",
-        description: "A dystopian vision of a future society driven by technology and consumerism.",
-        rating: 4.6,
-        image: BraveNewWorld,
-        category: "Science Fiction"
-    },
-    {
-        id: 27,
-        title: "The Book Thief",
-        author: "Markus Zusak",
-        description: "A story of a young girl living in Nazi Germany who finds solace in books.",
-        rating: 4.7,
-        image: TheBookThief,
-        category: "Historical Fiction"
-    },
-    {
-        id: 28,
-        title: "The Lord of the Rings",
-        author: "J.R.R. Tolkien",
-        description: "A fantasy epic following the journey to destroy the One Ring.",
-        rating: 4.9,
-        image: TheLordoftheRings,
-        category: "Fantasy"
-    },
-    {
-        id: 29,
-        title: "The Picture of Dorian Gray",
-        author: "Oscar Wilde",
-        description: "A philosophical novel about vanity, youth, and the consequences of a life of excess.",
-        rating: 4.5,
-        image: ThePictureofDorianGray,
-        category: "Fiction"
-    },
-    {
-        id: 30,
-        title: "Don Quixote",
-        author: "Miguel de Cervantes",
-        description: "The comedic and tragic tale of a man who believes himself to be a knight.",
-        rating: 4.4,
-        image: DonQuixote,
-        category: "Classics"
-    },
-
 ];
-interface BookListProps {
-    searchTerm: string;
-    selectedCategory: string;
-    limit?: number;
+
+const BookList = ({ searchTerm, selectedCategory, limit = books.length }) => {
+    const filteredBooks = books.filter(book => 
+        (selectedCategory === "All" || book.category === selectedCategory) &&
+        (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
+        .slice(0, limit)
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredBooks.map((book) => (
+            <div key={book.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <img src={book.image} alt={book.title} className="w-full h-48 object-cover" />
+            <div className="p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">{book.title}</h2>
+                <div className="flex items-center mb-2">
+                <User className="w-4 h-4 mr-1 text-gray-600" />
+                <span className="text-gray-600">{book.author}</span>
+                </div>
+                <p className="text-gray-600 mb-2">{book.description}</p>
+                <div className="flex items-center justify-between">
+                <span className="text-sm text-indigo-600 font-semibold">{book.category}</span>
+                <div className="flex items-center">
+                    <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                    <span className="text-gray-700">{book.rating.toFixed(1)}</span>
+                </div>
+                </div>
+            </div>
+            </div>
+        ))}
+        </div>
+    )
 }
 
-
-    const BookList = ({ searchTerm = "", selectedCategory = "All", limit = books.length }: BookListProps) => {
-        const filteredBooks = books
-            .filter((book) =>
-                (selectedCategory === "All" || book.category === selectedCategory) &&
-                (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                book.description.toLowerCase().includes(searchTerm.toLowerCase()))
-            )
-            .slice(0, limit);
-        
-            return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredBooks.map((book) => (
-                <div key={book.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                    <img src={book.image} alt={book.title} className="w-full h-48 object-cover" />
-                    <div className="p-6">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">{book.title}</h2>
-                    <div className="flex items-center mb-2">
-                        <User className="w-4 h-4 mr-1 text-gray-600" />
-                        <span className="text-gray-600">{book.author}</span>
-                    </div>
-                    <p className="text-gray-600 mb-2">{book.description}</p>
-                    <div className="flex items-center justify-between">
-                        <span className="text-sm text-indigo-600 font-semibold">{book.category}</span>
-                        <div className="flex items-center">
-                        <Star className="w-5 h-5 text-yellow-400 mr-1" />
-                        <span className="text-gray-700">{book.rating.toFixed(1)}</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                ))}
-            </div>
-            );
-};
-export default BookList;
+export default BookList
