@@ -1,5 +1,5 @@
 import  { useState } from 'react'
-import BookList from '../components/Booklist'
+import BookList from '../components/BookList'
 import { Search } from 'lucide-react'
 
 const categories = ["All", "Fiction", "Science Fiction", "Romance", "Adventure", "Magical Realism", "Religious", "Mystery", "Historical Fiction", "Fantasy", "Non-fiction", "Biography", "Poetry", "Drama", "Horror", "Thriller", "Classics"]
